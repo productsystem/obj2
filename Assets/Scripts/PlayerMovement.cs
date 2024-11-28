@@ -16,5 +16,9 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
         rb.velocity = new Vector2(movementSpeed, rb.velocity.y);
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            rb.gravityScale = -rb.gravityScale;
+        }
     }
 }
