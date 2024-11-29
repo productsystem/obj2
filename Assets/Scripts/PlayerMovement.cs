@@ -1,3 +1,5 @@
+using System.Text.RegularExpressions;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -7,52 +9,45 @@ public class PlayerMovement : MonoBehaviour
     public float colliderOffset = 0.5f;
     private Rigidbody2D rb;
     private Vector2 rayDirection;
+    
 
-
-    // Start is called before the first frame update
     void Start()
     {
         canJump = false;
         rb = GetComponent<Rigidbody2D>();
 
     }
-    // Update is called once per frame
+
     void FixedUpdate()
     {
         rb.velocity = new Vector2(movementSpeed, rb.velocity.y);
-        
     }
 
     void Update()
     {
+        float localOffset = ((int)transform.rotation.z == 0) ? 0.6f : -0.6f;
+        RaycastHit2D hit = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y - localOffset), -transform.up, 0.2f);
+        if(hit.collider == null)
+            canJump = false;
+        else
+            canJump = true;
+        
         rayDirection = (movementSpeed > 0) ? Vector2.right : Vector2.left;
+
         if(Input.GetKeyDown(KeyCode.Space) && canJump)
         {
             CheckJump();
         }
 
-        RaycastHit2D[] hit = Physics2D.RaycastAll(transform.position, rayDirection, 0.6f);
-        for(int i = 0 ; i < hit.Length; i++)
+        RaycastHit2D[] hitX = Physics2D.RaycastAll(transform.position, rayDirection, 0.6f);
+        for(int i = 0 ; i < hitX.Length; i++)
         {
-            if(hit[i].collider.name != "Player")
+            if(hitX[i].collider.name != "Player")
             {
                 movementSpeed = -movementSpeed;
                 break;
             }
         }
-    }
-
-    void OnCollisionEnter2D(Collision2D collision)
-    {
-        if(collision.collider != null)
-        {
-            canJump = true;
-        }
-    }
-
-    void OnCollisionExit2D(Collision2D collision)
-    {
-        canJump = false;
     }
 
     void CheckJump()
@@ -67,7 +62,7 @@ public class PlayerMovement : MonoBehaviour
                 Vector2 adjustedPoint = ray[i].point - (Vector2)transform.up * colliderExtents.y;
                 rb.MovePosition(adjustedPoint);
                 rb.gravityScale = -rb.gravityScale;
-                transform.rotation = Quaternion.Euler(0,0,transform.eulerAngles.z + 180);
+                rb.rotation += 180;
                 break;
             }
         }
