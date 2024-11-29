@@ -80,5 +80,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if(other.CompareTag("Hazard"))
             SceneManager.LoadScene("SampleScene");
+        if(other.CompareTag("Goal"))
+            SceneManager.LoadScene("SampleScene");
     }
 }
