@@ -1,6 +1,5 @@
-using System.Text.RegularExpressions;
-using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -15,7 +14,6 @@ public class PlayerMovement : MonoBehaviour
     {
         canJump = false;
         rb = GetComponent<Rigidbody2D>();
-
     }
 
     void FixedUpdate()
@@ -25,24 +23,34 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
+        CanJump();
+        
+        rayDirection = (movementSpeed > 0) ? Vector2.right : Vector2.left;
+
+        if(Input.GetKeyDown(KeyCode.Space) && canJump)
+        {
+            Teleport();
+        }
+
+        Bounce();
+    }
+
+    void CanJump()
+    {
         float localOffset = ((int)transform.rotation.z == 0) ? 0.6f : -0.6f;
         RaycastHit2D hit = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y - localOffset), -transform.up, 0.2f);
         if(hit.collider == null)
             canJump = false;
         else
             canJump = true;
-        
-        rayDirection = (movementSpeed > 0) ? Vector2.right : Vector2.left;
+    }
 
-        if(Input.GetKeyDown(KeyCode.Space) && canJump)
-        {
-            CheckJump();
-        }
-
+    void Bounce()
+    {
         RaycastHit2D[] hitX = Physics2D.RaycastAll(transform.position, rayDirection, 0.6f);
         for(int i = 0 ; i < hitX.Length; i++)
         {
-            if(hitX[i].collider.name != "Player")
+            if(hitX[i].collider.name != "Player" && !hitX[i].collider.CompareTag("Hazard"))
             {
                 movementSpeed = -movementSpeed;
                 break;
@@ -50,7 +58,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    void CheckJump()
+    void Teleport()
     {
         RaycastHit2D[] ray = Physics2D.RaycastAll(transform.position, transform.up, Mathf.Infinity);
         for(int i = 0 ; i < ray.Length; i++)
@@ -66,5 +74,11 @@ public class PlayerMovement : MonoBehaviour
                 break;
             }
         }
+    }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if(other.CompareTag("Hazard"))
+            SceneManager.LoadScene("SampleScene");
     }
 }
