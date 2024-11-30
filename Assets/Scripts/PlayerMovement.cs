@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -88,5 +89,15 @@ public class PlayerMovement : MonoBehaviour
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         if(other.CompareTag("Goal"))
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        if(other.CompareTag("Key"))
+        {
+            GameObject[] locks = GameObject.FindGameObjectsWithTag("Lock Door");
+            foreach(var l in locks)
+            {
+                l.SetActive(false);
+            }
+            GameObject key = other.gameObject;
+            Destroy(key);
+        }
     }
 }
