@@ -1,9 +1,10 @@
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class PlayerMovement : MonoBehaviour
 {
+    public static int matrices = 0;
+    private bool matrixGot;
     public float movementSpeed = 10f;
     public bool canJump;
     public float colliderOffset = 0.5f;
@@ -14,6 +15,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Start()
     {
+        matrixGot = false;
         flipDir = false;
         canJump = false;
         rb = GetComponent<Rigidbody2D>();
@@ -91,7 +93,7 @@ public class PlayerMovement : MonoBehaviour
         RaycastHit2D[] hitX = Physics2D.RaycastAll(transform.position, rayDirection, 0.6f);
         for(int i = 0 ; i < hitX.Length; i++)
         {
-            if(hitX[i].collider.name != "Player" && !hitX[i].collider.CompareTag("Hazard") && !hitX[i].collider.CompareTag("Goal"))
+            if(hitX[i].collider.name != "Player" && !hitX[i].collider.CompareTag("Hazard") && !hitX[i].collider.CompareTag("Goal") && !hitX[i].collider.CompareTag("Matrix"))
             {
                 movementSpeed = -movementSpeed;
                 break;
@@ -120,9 +122,17 @@ public class PlayerMovement : MonoBehaviour
     void OnTriggerEnter2D(Collider2D other)
     {
         if(other.CompareTag("Hazard"))
+        {
+            if(matrixGot)
+            {
+                matrices--;
+            }
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
         if(other.CompareTag("Goal"))
+        {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        }
         if(other.CompareTag("Key"))
         {
             GameObject[] locks = GameObject.FindGameObjectsWithTag("Lock Door");
@@ -133,5 +143,11 @@ public class PlayerMovement : MonoBehaviour
             GameObject key = other.gameObject;
             Destroy(key);
         }
+        if(other.CompareTag("Matrix"))
+        {
+            matrices++;
+            matrixGot = true;
+            Destroy(other.gameObject);
+        }   
     }
 }

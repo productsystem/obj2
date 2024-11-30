@@ -11,6 +11,7 @@ TagManager:
   - Lock Door
   - Orange Flip
   - Pink Flip
+  - Matrix
   layers:
   - Default
   - TransparentFX
