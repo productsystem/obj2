@@ -9,10 +9,12 @@ public class PlayerMovement : MonoBehaviour
     public float colliderOffset = 0.5f;
     private Rigidbody2D rb;
     private Vector2 rayDirection;
+    public bool flipDir;
     
 
     void Start()
     {
+        flipDir = false;
         canJump = false;
         rb = GetComponent<Rigidbody2D>();
     }
@@ -25,12 +27,14 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
         CanJump();
+        FlipTiles();
         
         rayDirection = (movementSpeed > 0) ? Vector2.right : Vector2.left;
 
         if(Input.GetKeyDown(KeyCode.Space) && canJump)
         {
             Teleport();
+            flipDir = !flipDir;
         }
 
         Bounce();
@@ -40,7 +44,37 @@ public class PlayerMovement : MonoBehaviour
 
 
 
-
+    void FlipTiles()
+    {
+        GameObject[] orang = GameObject.FindGameObjectsWithTag("Orange Flip");
+        foreach(var f in orang)
+        {
+            if(flipDir)
+            {
+                f.GetComponent<SpriteRenderer>().enabled = false;
+                f.GetComponent<BoxCollider2D>().enabled = false;
+            }
+            else
+            {
+                f.GetComponent<SpriteRenderer>().enabled = true;
+                f.GetComponent<BoxCollider2D>().enabled = true;
+            }
+        }
+        GameObject[] pink = GameObject.FindGameObjectsWithTag("Pink Flip");
+        foreach(var f in pink)
+        {
+            if(flipDir)
+            {
+                f.GetComponent<SpriteRenderer>().enabled = true;
+                f.GetComponent<BoxCollider2D>().enabled = true;
+            }
+            else
+            {
+                f.GetComponent<SpriteRenderer>().enabled = false;
+                f.GetComponent<BoxCollider2D>().enabled = false;
+            }
+        }
+    }
 
     void CanJump()
     {

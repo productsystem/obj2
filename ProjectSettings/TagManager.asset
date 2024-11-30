@@ -9,6 +9,8 @@ TagManager:
   - Goal
   - Key
   - Lock Door
+  - Orange Flip
+  - Pink Flip
   layers:
   - Default
   - TransparentFX
