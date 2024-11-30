@@ -35,6 +35,12 @@ public class PlayerMovement : MonoBehaviour
         Bounce();
     }
 
+
+
+
+
+
+
     void CanJump()
     {
         float localOffset = ((int)transform.rotation.z == 0) ? 0.6f : -0.6f;
@@ -50,7 +56,7 @@ public class PlayerMovement : MonoBehaviour
         RaycastHit2D[] hitX = Physics2D.RaycastAll(transform.position, rayDirection, 0.6f);
         for(int i = 0 ; i < hitX.Length; i++)
         {
-            if(hitX[i].collider.name != "Player" && !hitX[i].collider.CompareTag("Hazard"))
+            if(hitX[i].collider.name != "Player" && !hitX[i].collider.CompareTag("Hazard") && !hitX[i].collider.CompareTag("Goal"))
             {
                 movementSpeed = -movementSpeed;
                 break;
@@ -79,8 +85,8 @@ public class PlayerMovement : MonoBehaviour
     void OnTriggerEnter2D(Collider2D other)
     {
         if(other.CompareTag("Hazard"))
-            SceneManager.LoadScene("SampleScene");
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         if(other.CompareTag("Goal"))
-            SceneManager.LoadScene("SampleScene");
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 }
