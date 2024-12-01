@@ -48,12 +48,16 @@ MonoBehaviour:
   - name: Jump
     clip: {fileID: 8300000, guid: 8fd55cbd398f11749bcabfb15414415d, type: 3}
     source: {fileID: 0}
+    pitch: 1
   - name: Collect
     clip: {fileID: 8300000, guid: 6f10a57cc20aa414db5a4a346b27fd1c, type: 3}
     source: {fileID: 0}
+    pitch: 1
   - name: Bounce
     clip: {fileID: 8300000, guid: 80d705a09dcf52f439af35af9319ddfd, type: 3}
     source: {fileID: 0}
+    pitch: 1
   - name: Key
     clip: {fileID: 8300000, guid: 54390c5aa8b916c408d149a1b6a6ceb0, type: 3}
     source: {fileID: 0}
+    pitch: 1
