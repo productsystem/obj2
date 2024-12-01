@@ -11,6 +11,7 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody2D rb;
     private Vector2 rayDirection;
     public bool flipDir;
+    private bool isReloading = false;
     
 
     void Start()
@@ -121,8 +122,9 @@ public class PlayerMovement : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if(other.CompareTag("Hazard"))
+        if(other.CompareTag("Hazard") && !isReloading)
         {
+            isReloading = true;
             if(matrixGot)
             {
                 matrices--;
