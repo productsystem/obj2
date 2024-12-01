@@ -122,6 +122,10 @@ public class PlayerMovement : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
+        if(other.name == "Exit")
+        {
+            Application.Quit();
+        }
         if(other.CompareTag("Hazard") && !isReloading)
         {
             isReloading = true;
