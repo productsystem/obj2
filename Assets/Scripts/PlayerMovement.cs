@@ -3,6 +3,7 @@ using UnityEngine.SceneManagement;
 
 public class PlayerMovement : MonoBehaviour
 {
+    [SerializeField] private AudioClip jumpSound;
     public static int matrices = 0;
     private bool matrixGot;
     public float movementSpeed = 10f;
@@ -104,6 +105,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Teleport()
     {
+        GameObject.Find("AudioManager").GetComponent<AudioManager>().Play("Jump");
         RaycastHit2D[] ray = Physics2D.RaycastAll(transform.position, transform.up, Mathf.Infinity);
         for(int i = 0 ; i < ray.Length; i++)
         {
