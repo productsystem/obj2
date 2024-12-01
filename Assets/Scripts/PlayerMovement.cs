@@ -97,6 +97,7 @@ public class PlayerMovement : MonoBehaviour
         {
             if(hitX[i].collider.name != "Player" && !hitX[i].collider.CompareTag("Hazard") && !hitX[i].collider.CompareTag("Goal") && !hitX[i].collider.CompareTag("Matrix"))
             {
+                GameObject.Find("AudioManager").GetComponent<AudioManager>().Play("Bounce");
                 movementSpeed = -movementSpeed;
                 break;
             }
@@ -143,6 +144,7 @@ public class PlayerMovement : MonoBehaviour
         }
         if(other.CompareTag("Key"))
         {
+            GameObject.Find("AudioManager").GetComponent<AudioManager>().Play("Key");
             GameObject[] locks = GameObject.FindGameObjectsWithTag("Lock Door");
             foreach(var l in locks)
             {
@@ -153,6 +155,7 @@ public class PlayerMovement : MonoBehaviour
         }
         if(other.CompareTag("Matrix"))
         {
+            GameObject.Find("AudioManager").GetComponent<AudioManager>().Play("Collect");
             matrices++;
             matrixGot = true;
             Destroy(other.gameObject);
